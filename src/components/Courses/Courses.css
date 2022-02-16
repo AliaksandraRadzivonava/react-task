@@ -1,0 +1,24 @@
+.courses {
+  margin: 20px;
+  border: 3px solid rgb(49, 159, 223);
+}
+
+.courses-list {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+.courses-list-elem {
+  list-style-type: none;
+}
+
+.courses-panel {
+  margin: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.courses-panel_search {
+  min-width: px;
+}

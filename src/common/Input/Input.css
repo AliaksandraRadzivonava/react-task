@@ -1,0 +1,5 @@
+input {
+  border: 3px solid rgb(250, 144, 56);
+  min-width: 100%;
+  min-height: 25px;
+}

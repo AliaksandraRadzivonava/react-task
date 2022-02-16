@@ -1,0 +1,43 @@
+.form {
+  margin: 20px;
+  padding: 25px;
+  border: 3px solid rgb(49, 159, 223);
+}
+
+.form-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-description {
+  padding: 20px 0px;
+}
+
+.form-information {
+  border: 3px solid rgb(85, 20, 160);
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.form-information_elem {
+  margin: 20px;
+  min-width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-information_authors {
+  min-width: 45%;
+  padding-left: 35px;
+}
+
+.form-information_durations {
+  font-size: 1.5em;
+}
+
+.input {
+  min-width: 90%;
+  padding-bottom: 20px;
+}

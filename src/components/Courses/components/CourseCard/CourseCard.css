@@ -1,0 +1,19 @@
+.courseCard {
+  border: 3px solid rgb(13, 153, 118);
+  margin: 25px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.courseCard-desctiption {
+  padding: 15px;
+}
+
+.courseCard-infotmation {
+  padding: 10px;
+  min-width: 30%;
+}
+
+.courseCard-infotmation_button {
+  margin: auto;
+}
