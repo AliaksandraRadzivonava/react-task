@@ -1,72 +1,63 @@
-import React, { useState } from 'react';
-import { mockedAuthorsList, mockedCoursesList } from '../../App.jsx';
-import { Button } from '../../common/Button/Button';
+import React, { useState, useCallback, useMemo } from 'react';
+
+import Button from '../../common/Button/Button';
+
 import CourseCard from './components/CourseCard/CourseCard';
-import SearchBar from './components/SearchBar/SearchBar.jsx';
-import CreateCourse from '../CreateCourse/CreateCourse.jsx';
+import SearchBar from './components/SearchBar/SearchBars';
 
 import './Courses.css';
 
-const Courses = () => {
-	const [value, setValue] = useState('');
-	const [isFormOpened, setIsFromOpened] = useState(false);
+const Courses = ({ onAddNewCourseClick, courses, authors }) => {
+	const [foundCourses, setFoundCourses] = useState(courses);
+	const [searchString, setSearchString] = useState('');
 
-	const authorName = (list) => {
-		const namesAuthor = list.map((elem) => {
-			return mockedAuthorsList
-				.filter((e) => e.id === elem)
-				.map((e) => {
-					return e.name;
-				});
-		});
+	const coursesToRender = useMemo(
+		() =>
+			foundCourses.map((course) => {
+				return (
+					<CourseCard
+						key={course.id}
+						course={course}
+						authors={course.authors.map((id) => {
+							return authors.find((author) => author.id === id)?.name;
+						})}
+					/>
+				);
+			}),
+		[authors, foundCourses]
+	);
 
-		return namesAuthor.join(', ');
-	};
+	const searchCourse = useCallback(() => {
+		const foundCourses = courses.filter(
+			(course) =>
+				course.title.toLowerCase().includes(searchString.toLowerCase()) ||
+				course.id.toLowerCase().includes(searchString.toLowerCase())
+		);
+		setFoundCourses(foundCourses);
+	}, [searchString, courses]);
 
-	const filteredCourses = mockedCoursesList.filter((elem) => {
-		const pred =
-			elem.title.toLowerCase().includes(value.toLowerCase()) ||
-			elem.id.toLowerCase().includes(value.toLowerCase());
-		return pred;
-	});
-
-	const onClick = (event) => {
-		event.preventDefault();
-	};
-
-	const durationFormat = (duration) => {
-		const minutes = Number(duration);
-		return Math.floor(minutes / 60) + ':' + (minutes % 60);
-	};
-
-	const coursesList = filteredCourses.map((item) => (
-		<li className='courses-list-elem' key={item.id}>
-			<CourseCard
-				onClick={null}
-				title={item.title}
-				description={item.description}
-				authors={authorName(item.authors)}
-				duration={durationFormat(item.duration)}
-				creationDate={new Date(item.creationDate).toLocaleDateString()}
-			/>
-		</li>
-	));
-
-	return !isFormOpened ? (
-		<div className='courses'>
-			<div className='courses-panel'>
-				<SearchBar
-					className='courses-panel_search'
-					value={value}
-					onChange={(e) => setValue(e.target.value)}
-					onClick={onClick}
-				/>
-				<Button text='Add new course' onClick={() => setIsFromOpened(true)} />
+	return (
+		<div className='courses-list'>
+			<div className='header'>
+				<div className='search-course'>
+					<SearchBar
+						buttonText='Search'
+						placeholderText='Enter course name or id...'
+						onClick={searchCourse}
+						onChange={(e) => {
+							setSearchString(e.target.value);
+							if (e.target.value === '') {
+								setFoundCourses(courses);
+							}
+						}}
+					/>
+				</div>
+				<div className='add-course-button'>
+					<Button buttonText='Add new course' onClick={onAddNewCourseClick} />
+				</div>
 			</div>
-			<ul className='courses-list'>{coursesList}</ul>
+			{coursesToRender}
 		</div>
-	) : (
-		<CreateCourse />
 	);
 };
 

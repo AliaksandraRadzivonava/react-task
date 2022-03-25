@@ -1,24 +1,36 @@
-.courses {
-  margin: 20px;
-  border: 3px solid rgb(49, 159, 223);
-}
-
 .courses-list {
-  margin-left: 0px;
-  padding-left: 0px;
+    box-sizing: border-box;
+    border: solid rgb(58, 122, 206) 3px;
+    padding: 10px;
 }
 
-.courses-list-elem {
-  list-style-type: none;
+button {
+    border-color: purple;
+    background-color: white;
+    height: 26px;
+    width: 120px;   
 }
 
-.courses-panel {
-  margin: 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.search-course button {
+    margin-left: 20px;
 }
 
-.courses-panel_search {
-  min-width: px;
+.search-course {
+    display: inline-block;
+    height: 40px;
+}
+
+.add-course-button {
+    position: relative;
+    float: right;
+    height: 40px;
+}
+
+.search-course input {
+    height: 20px;
+    width: 300px;
+}
+
+.courses-list .header {
+    padding: 10px;
 }

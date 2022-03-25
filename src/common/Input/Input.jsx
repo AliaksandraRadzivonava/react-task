@@ -1,16 +1,30 @@
 import React from 'react';
 
-import './Input.css';
+const Input = ({
+	type = 'text',
+	value,
+	min,
+	labelText,
+	placeholderText,
+	onChange,
+	isTextArea,
+	inputRef,
+	name,
+}) => {
+	const InputComponent = isTextArea ? 'textarea' : 'input';
 
-const Input = ({ value, onChange, placeholder, label }) => {
 	return (
 		<>
-			<label>{label}</label>
-			<input
-				type='text'
-				placeholder={placeholder}
+			{labelText && <label htmlFor='inputTextId'>{labelText}</label>}
+			<InputComponent
+				type={type}
 				value={value}
+				min={min}
+				ref={inputRef}
+				name={name}
 				onChange={onChange}
+				placeholder={placeholderText}
+				id='inputTextId'
 			/>
 		</>
 	);

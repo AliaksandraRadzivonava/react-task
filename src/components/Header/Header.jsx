@@ -1,17 +1,18 @@
 import React from 'react';
-import { Button } from '../../common/Button/Button';
-import { Logo } from './components/Logo/Logo';
-
+import Button from '../../common/Button/Button';
+import Logo from './components/Logo/Logo';
 import './Header.css';
 
-const Header = () => {
+const Header = (props) => {
 	return (
-		<div className='header'>
-			<Logo />
-			<div className='header-title'>
-				<p className='header-title_text'>Alex</p>
-				<Button text='Logout' onClick={null} />
+		<div className='main-header'>
+			<div className='logo'>
+				<Logo />
 			</div>
+			<div className='logout-button'>
+				<Button buttonText='Logout' />
+			</div>
+			<div className='username'>{props.userName}</div>
 		</div>
 	);
 };

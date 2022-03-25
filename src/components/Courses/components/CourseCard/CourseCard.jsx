@@ -1,40 +1,28 @@
 import React from 'react';
-import { Button } from '../../../../common/Button/Button';
-
+import Button from '../../../../common/Button/Button';
+import { pipeDuration } from '../../../../helpers/pipeDuration';
 import './CourseCard.css';
 
-const CourseCard = ({
-	onClick,
-	title,
-	description,
-	authors,
-	duration,
-	creationDate,
-}) => {
+const CourseCard = ({ course, authors }) => {
 	return (
-		<div className='courseCard'>
-			<div className='courseCard-desctiption'>
-				<h1 className='courseCard-desctiption_title'>{title}</h1>
-				<p className='courseCard-desctiption_text'>{description}</p>
+		<div className='course-card'>
+			<div className='main-info'>
+				<h1>{course.title}</h1>
+				<>{course.description}</>
 			</div>
-			<div className='courseCard-infotmation'>
-				<p className='courseCard-infotmation_elem'>
-					<b>Authors: </b>
-					{authors}
-				</p>
-				<p className='courseCard-infotmation_elem'>
-					<b>Duration: </b>
-					{duration}
-				</p>
-				<p className='courseCard-infotmation_elem'>
-					<b>Created: </b>
-					{creationDate}
-				</p>
-				<Button
-					onClick={onClick}
-					text='Show course'
-					className='courseCard-infotmation_button'
-				/>
+			<div className='additional-info'>
+				<div className='authors'>
+					<b>Authors:</b> {authors.join(', ')}
+				</div>
+				<div>
+					<b>Duration: </b> {pipeDuration(course.duration)}
+				</div>
+				<div>
+					<b>Created:</b> {course.creationDate}
+				</div>
+				<div className='show-button'>
+					<Button buttonText='Show course' />
+				</div>
 			</div>
 		</div>
 	);

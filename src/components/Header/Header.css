@@ -1,19 +1,27 @@
-.header {
-  margin: 20px;
-  display: flex;
-  justify-content: space-between;
-  border: 3px solid rgb(116, 20, 20);
+.main-header {
+    box-sizing: border-box;
+    border: solid rgb(167, 15, 15) 3px;
+    height: 75px;
+
 }
 
-.header-title {
-  min-width: 20%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+.main-header .logout-button button {
+    float: right;
+    border-color: purple;
+    background-color: white;
+    margin: 20px;
+    height: 26px;
+    width: 120px;
 }
 
-.header-title_text {
+.main-header .logo  img{
+    float: left;
+    height: 50px;
+    width: 50px;
+    padding: 10px 0 10px 20px;
+}
 
-  font-weight: bold;
-  font-size: 18px;
+.main-header .username {
+    float: right;
+    padding: 20px;
 }

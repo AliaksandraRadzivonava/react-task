@@ -1,43 +1,71 @@
-.form {
+label {
+  display: block;
+}
+
+.description-input {
+  padding-left: 20px;
+}
+
+button {
+  background-color: white;
+  border-color: purple;
+  height: 26px;
+  width: 120px;
+}
+
+.create-author button {
+  display: block;
+  margin: 10px 0 0 25px;
+}
+
+.create-author{
+  display: inline-block;
+  vertical-align:top;
+}
+
+.authors-input .authors{
+  padding-left: 40px;
+  display: inline-block;
+}
+
+.author-name {
+  display: inline-block;
+  width: 200px;
+}
+
+.author-buttons {
+  display: inline-block; 
+}
+
+.duration-input input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.create-course .header {
+  display: flex;
+  padding: 20px;
+  position: relative;
+}
+
+.create-course .header button {
+  position: absolute;
+  right: 0;
+  bottom: 0;
   margin: 20px;
-  padding: 25px;
-  border: 3px solid rgb(49, 159, 223);
 }
 
-.form-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+
+.create-course {
+  box-sizing: border-box;
+  border: solid rgb(58, 122, 206) 3px;
 }
 
-.form-description {
-  padding: 20px 0px;
-}
-
-.form-information {
-  border: 3px solid rgb(85, 20, 160);
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.form-information_elem {
+.duration-input {
   margin: 20px;
-  min-width: 45%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.form-information_authors {
-  min-width: 45%;
-  padding-left: 35px;
-}
-
-.form-information_durations {
-  font-size: 1.5em;
-}
-
-.input {
-  min-width: 90%;
-  padding-bottom: 20px;
+.authors-input {
+  margin: 20px;
 }
