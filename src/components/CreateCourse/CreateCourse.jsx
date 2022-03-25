@@ -1,146 +1,150 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from '../../common/Button/Button';
-import Input from '../../common/Input/Input.jsx';
-import Textarea from '../../common/Textarea/Textarea';
-import Author from './components/Author/Author';
-import { mockedAuthorsList, mockedCoursesList } from '../../App.jsx';
+import React, { useState, useRef } from 'react';
+
+import { v4 as uuidv4 } from 'uuid';
+
+import Button from '../../common/Button/Button';
+import Input from '../../common/Input/Input';
+
+import moment from 'moment';
+
+import { pipeDuration } from '../../helpers/pipeDuration';
 
 import './CreateCourse.css';
 
-const newCourse = {
-	id: '',
-	title: '',
-	description: '',
-	creationDate: '',
-	duration: 0,
-	authors: [],
-};
+const CreateCourse = ({ onCreateCourse, authors, onCreateAuthor }) => {
+	const [courseAuthors, setCourseAuthors] = useState([]);
+	const [formData, setFormData] = useState({ duration: 0 });
 
-const CreateCourse = () => {
-	const [title, setTitle] = useState('');
-	const [author, setAuthor] = useState('');
-	const [description, setDescription] = useState('');
-	const [duration, setDuration] = useState('');
-	// const [course, setCourse] = useState(newCourse);
-	const [newAuthor, setNewAuthor] = useState({});
-	const [authorsList, setAutorsList] = useState([]);
+	const inputAuthorName = useRef('');
 
-	const addAuthor = (elem) => {
-		authorsList.push(elem);
-		let index = allAuthors.indexOf(elem);
-
-		if (index !== -1) {
-			allAuthors.splice(index, 1);
-		}
-		console.log(authorsList);
-		console.log(allAuthors);
+	const handleInputChange = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
-	const deleteAuthor = (elem) => {
-		authorsList.push(elem);
-		let index = allAuthors.indexOf(elem);
-
-		if (index !== -1) {
-			allAuthors.splice(index, 1);
+	const onCreateAuthorClick = () => {
+		if (inputAuthorName.current.value?.length) {
+			onCreateAuthor({ id: uuidv4(), name: inputAuthorName.current.value });
 		}
-		console.log(authorsList);
-		console.log(allAuthors);
 	};
 
-	const allAuthors = mockedAuthorsList.map((elem) => {
-		return (
-			<Author
-				text='Add author'
-				onClick={() => addAuthor(elem)}
-				nameAuthor={elem.name}
-			/>
+	const onAddAuthorClick = (author) => {
+		let courseAuthorNames = courseAuthors.map((author) => author.name);
+		if (!courseAuthorNames.find((authorName) => author.name === authorName)) {
+			setCourseAuthors([...courseAuthors, author]);
+		}
+	};
+
+	const onDeleteAuthorClick = (author) => {
+		let deleteAuthor = courseAuthors.filter((auth) => auth.id !== author.id);
+		setCourseAuthors(deleteAuthor);
+	};
+
+	const validateForm = (...args) => {
+		if (args.some((elem) => !elem?.length)) {
+			alert('Please, fill all fields');
+			return false;
+		}
+
+		return true;
+	};
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+
+		const isValid = validateForm(
+			formData.title,
+			formData.description,
+			formData.duration,
+			courseAuthors
 		);
-	});
 
-	const addNewAuthor = (name, e) => {
-		const newAuthor = {
-			name: name,
-			id: '123',
-		};
-		mockedAuthorsList.push(newAuthor);
+		if (isValid) {
+			onCreateCourse({
+				id: uuidv4(),
+				creationDate: moment(new Date()).format('DD/MM/YYYY'),
+				description: formData.description,
+				title: formData.title,
+				duration: formData.duration,
+				authors: courseAuthors.map((author) => author.id),
+			});
+		}
 	};
-
-	const authors = () => {
-		authorsList.map((elem) => {
-			return (
-				<Author text='Delete author' onChange={null} nameAuthor={elem.name} />
-			);
-		});
-	};
-
-	function durationFormat(duration) {
-		const minutes = Number(duration);
-		return Math.floor(minutes / 60) + ':' + (minutes % 60);
-	}
 
 	return (
-		<div className='form'>
-			<div className='form-title'>
-				<div>
+		<div className='create-course'>
+			<form onSubmit={onSubmit}>
+				<div className='header'>
+					<div className='title-input'>
+						<Input
+							labelText='Title'
+							name='title'
+							placeholderText='Enter title...'
+							onChange={handleInputChange}
+							value={formData.title}
+						/>
+					</div>
+					<Button type='submit' buttonText='Create course' />
+				</div>
+
+				<div className='description-input'>
 					<Input
-						label='Title'
-						placeholder='Enter title...'
-						value={title}
-						onChange={(e) => {
-							setTitle(e.target.value);
-						}}
+						name='description'
+						labelText='Description'
+						isTextArea={true}
+						placeholderText='Enter description'
+						onChange={handleInputChange}
+						value={formData.description}
 					/>
 				</div>
-				<Button onClick={null} text='Create course' />
-			</div>
-			<div className='form-description'>
-				<Textarea
-					label='Description'
-					placeholder='Enter description...'
-					value={description}
-					onChange={(e) => {
-						setDescription(e.target.value);
-					}}
-				/>
-			</div>
-			<div className='form-information'>
-				<div className='form-information_elem'>
-					<h3>Add authors</h3>
-					<div className='input'>
-						<Input
-							label='Author name'
-							placeholder='Enter author name...'
-							value={author}
-							onChange={(e) => {
-								setAuthor(e.target.value);
-							}}
-						/>
-					</div>
-					<Button onClick={() => addNewAuthor(author)} text='Create author' />
+
+				<div className='duration-input'>
+					<h2>Duration</h2>
+					<Input
+						type='number'
+						min='0'
+						name='duration'
+						labelText='Duration'
+						placeholderText='Enter duration in minutes'
+						value={formData.duration}
+						onChange={handleInputChange}
+					/>
+					<h1>Duration: {pipeDuration(formData.duration)}</h1>
 				</div>
-				<div className='form-information_authors'>
-					<h3 className='form-information_elem'>Authors</h3>
-					{allAuthors}
+			</form>
+			<div className='authors-input'>
+				<div className='create-author'>
+					<h2>Add author</h2>
+					<Input
+						inputRef={inputAuthorName}
+						labelText='Author name'
+						placeholderText='Enter author name...'
+					/>
+					<Button buttonText='Create Author' onClick={onCreateAuthorClick} />
 				</div>
-				<div className='form-information_elem'>
-					<h3>Duration</h3>
-					<div className='input'>
-						<Input
-							label='Duration'
-							placeholder='Enter duration in minutes...'
-							value={duration}
-							onChange={(e) => {
-								setDuration(e.target.value);
-							}}
-						/>
-					</div>
-					<p className='form-information_durations'>
-						Duration: <b>{durationFormat(duration)}</b> hours
-					</p>
+				<div className='authors'>
+					<b>Authors</b>
+					{authors.map((author) => {
+						return (
+							<div key={author.id} className='author'>
+								<div className='author-name'>{author.name}</div>
+								<div className='author-buttons'>
+									<Button
+										buttonText='Add author'
+										onClick={() => onAddAuthorClick(author)}
+									/>
+									<Button
+										buttonText='Delete author'
+										onClick={() => onDeleteAuthorClick(author)}
+									/>
+								</div>
+							</div>
+						);
+					})}
 				</div>
-				<div className='form-information_authors'>
-					<h3 className='form-information_elem'>Course Authors</h3>
-					{authors.length === 0 ? <p>Author list is empty</p> : authors}
+				<div className='course-authors'>
+					<h2>Course authors</h2>
+					{!courseAuthors?.length && <h3>Author list is empty</h3>}
+					{courseAuthors.map((author) => author.name).join(', ')}
 				</div>
 			</div>
 		</div>
